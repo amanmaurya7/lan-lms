@@ -1,11 +1,11 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
 
 export const dynamic = 'force-dynamic'
 
-const authOptions: NextAuthOptions = {
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -13,7 +13,7 @@ const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+      async authorize(credentials: any) {
         if (!credentials?.username || !credentials?.password) {
           return null
         }
@@ -51,7 +51,7 @@ const authOptions: NextAuthOptions = {
     })
   ],
   session: {
-    strategy: "jwt"
+    strategy: "jwt" as const
   },
   callbacks: {
     async jwt({ token, user }: any) {
@@ -75,8 +75,6 @@ const authOptions: NextAuthOptions = {
     error: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
-}
-
-const handler = NextAuth(authOptions)
+})
 
 export { handler as GET, handler as POST }

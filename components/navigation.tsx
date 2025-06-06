@@ -1,6 +1,6 @@
 "use client"
 
-import { useSession, signOut } from "next-auth/react"
+import { useAuth } from "@/lib/useAuth"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,9 +15,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { BookOpen, Users, FileText, Settings, LogOut, User } from "lucide-react"
 
 export function Navigation() {
-  const { data: session } = useSession()
+  const { user, logout } = useAuth()
 
-  if (!session) return null
+  if (!user) return null
 
   const getInitials = (name: string | null | undefined) => {
     if (!name) return "U"
@@ -27,9 +27,8 @@ export function Navigation() {
       .join("")
       .toUpperCase()
   }
-
   const getNavItems = () => {
-    const role = (session?.user as any)?.role
+    const role = user?.role
     const items = []
 
     if (role === "admin") {
@@ -82,18 +81,16 @@ export function Navigation() {
         <div className="ml-auto">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback>{getInitials(session?.user?.name)}</AvatarFallback>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">                <Avatar className="h-8 w-8">
+                  <AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
                 </Avatar>
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
+            </DropdownMenuTrigger>            <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{session?.user?.name}</p>
-                  <p className="text-xs leading-none text-muted-foreground">{session?.user?.email}</p>
-                  <p className="text-xs leading-none text-muted-foreground capitalize">{(session?.user as any)?.role}</p>
+                  <p className="text-sm font-medium leading-none">{user?.name}</p>
+                  <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                  <p className="text-xs leading-none text-muted-foreground capitalize">{user?.role}</p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -104,7 +101,7 @@ export function Navigation() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600" onClick={() => signOut({ callbackUrl: "/login" })}>
+              <DropdownMenuItem className="text-red-600" onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Log out
               </DropdownMenuItem>

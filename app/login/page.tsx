@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState } from "react"
-import { signIn, getSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,25 +17,29 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError("")
 
-    try {      const result = await signIn("credentials", {
-        username,
-        password,
-        redirect: false,
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
       })
 
-      if (result?.error) {
-        setError("Invalid username or password")
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || "Invalid username or password")
       } else {
-        const session = await getSession()
-        if ((session as any)?.user?.role === "admin") {
+        // Redirect based on user role
+        if (data.user.role === "admin") {
           router.push("/admin")
-        } else if ((session as any)?.user?.role === "teacher") {
+        } else if (data.user.role === "teacher") {
           router.push("/teacher")
         } else {
           router.push("/student")
