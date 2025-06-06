@@ -161,8 +161,7 @@ export default function TakeQuiz() {
       </div>
     )
   }
-
-  if (!session || session.user.role !== "student") {
+  if (!session || (session as any).user?.role !== "student") {
     return null
   }
 
