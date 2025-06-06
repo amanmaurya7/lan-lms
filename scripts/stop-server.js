@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { serverManager } = require("../lib/server-manager")
+const { serverManager } = require("../lib/server-manager.js")
 
 async function stopServer() {
   try {
