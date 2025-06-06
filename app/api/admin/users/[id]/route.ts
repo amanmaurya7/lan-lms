@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs"
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions) as any
+    const session = await getServerSession(authOptions as any) as any
 
     if (!session || !session.user || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -64,7 +64,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions) as any
+    const session = await getServerSession(authOptions as any) as any
 
     if (!session || !session.user || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

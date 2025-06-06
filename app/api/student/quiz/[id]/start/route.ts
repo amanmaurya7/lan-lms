@@ -5,7 +5,7 @@ import { db, isSEBBrowser } from "@/lib/db"
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions) as any
+    const session = await getServerSession(authOptions as any) as any
 
     if (!session || !session.user || session.user.role !== "student") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
