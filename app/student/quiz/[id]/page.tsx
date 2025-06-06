@@ -50,11 +50,10 @@ export default function TakeQuiz() {
   const [error, setError] = useState("")
   const [sebVerified, setSebVerified] = useState(false)
   const [attemptId, setAttemptId] = useState<number | null>(null)
-
   useEffect(() => {
     if (status === "loading") return
 
-    if (!session || session.user.role !== "student") {
+    if (!session || (session as any).user?.role !== "student") {
       router.push("/login")
       return
     }

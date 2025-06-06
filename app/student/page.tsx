@@ -33,9 +33,9 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (status === "loading") return
+        if (status === "loading") return
 
-    if (!session || session.user.role !== "student") {
+    if (!session || (session as any).user?.role !== "student") {
       router.push("/login")
       return
     }
@@ -67,8 +67,7 @@ export default function StudentDashboard() {
       </div>
     )
   }
-
-  if (!session || session.user.role !== "student") {
+  if (!session || (session as any).user?.role !== "student") {
     return null
   }
 
@@ -78,7 +77,7 @@ export default function StudentDashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Student Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome back, {session.user.name}. Here's your learning progress.</p>
+          <p className="text-gray-600 mt-2">Welcome back, {(session as any).user?.name}. Here's your learning progress.</p>
         </div>
 
         {stats && (

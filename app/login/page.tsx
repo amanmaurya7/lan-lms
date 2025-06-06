@@ -24,8 +24,7 @@ export default function LoginPage() {
     setIsLoading(true)
     setError("")
 
-    try {
-      const result = await signIn("credentials", {
+    try {      const result = await signIn("credentials", {
         username,
         password,
         redirect: false,
@@ -35,9 +34,9 @@ export default function LoginPage() {
         setError("Invalid username or password")
       } else {
         const session = await getSession()
-        if (session?.user.role === "admin") {
+        if ((session as any)?.user?.role === "admin") {
           router.push("/admin")
-        } else if (session?.user.role === "teacher") {
+        } else if ((session as any)?.user?.role === "teacher") {
           router.push("/teacher")
         } else {
           router.push("/student")

@@ -13,15 +13,15 @@ export default function HomePage() {
   useEffect(() => {
     if (status === "loading") return
 
-    if (!session) {
+        if (!session) {
       router.push("/login")
       return
     }
 
     // Redirect based on role
-    if (session.user.role === "admin") {
+    if ((session as any).user?.role === "admin") {
       router.push("/admin")
-    } else if (session.user.role === "teacher") {
+    } else if ((session as any).user?.role === "teacher") {
       router.push("/teacher")
     } else {
       router.push("/student")

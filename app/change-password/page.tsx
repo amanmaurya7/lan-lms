@@ -60,13 +60,11 @@ export default function ChangePasswordPage() {
         setSuccess("Password changed successfully!")
         setCurrentPassword("")
         setNewPassword("")
-        setConfirmPassword("")
-
-        // Redirect to appropriate dashboard after 2 seconds
+        setConfirmPassword("")        // Redirect to appropriate dashboard after 2 seconds
         setTimeout(() => {
-          if (session?.user.role === "admin") {
+          if ((session as any)?.user?.role === "admin") {
             router.push("/admin")
-          } else if (session?.user.role === "teacher") {
+          } else if ((session as any)?.user?.role === "teacher") {
             router.push("/teacher")
           } else {
             router.push("/student")
