@@ -1,9 +1,8 @@
-import type { NextAuthOptions } from "next-auth/next"
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { db } from "./db"
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -68,8 +67,7 @@ export const authOptions: NextAuthOptions = {
         session.user.username = token.username as string
       }
       return session
-    },
-  },
+    },  },
   pages: {
     signIn: "/login",
   },
